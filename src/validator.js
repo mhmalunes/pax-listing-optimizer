@@ -348,6 +348,29 @@ function checkDescription(description) {
   return issues;
 }
 
+// Reduces a list of issues to a single overall verdict for the top-level
+// summary badge: 'fail' if any ERROR is present, 'warn' if only WARNs,
+// otherwise 'pass'.
+export function getValidationSummary(issues) {
+  const errorCount = issues.filter((i) => i.severity === 'ERROR').length;
+  const warnCount = issues.filter((i) => i.severity === 'WARN').length;
+
+  let level = 'pass';
+  if (errorCount > 0) level = 'fail';
+  else if (warnCount > 0) level = 'warn';
+
+  let label;
+  if (level === 'pass') {
+    label = 'All compliance checks passed';
+  } else if (level === 'warn') {
+    label = `${warnCount} warning${warnCount === 1 ? '' : 's'} - review before publishing`;
+  } else {
+    label = `${errorCount} error${errorCount === 1 ? '' : 's'}, ${warnCount} warning${warnCount === 1 ? '' : 's'}`;
+  }
+
+  return { level, errorCount, warnCount, label };
+}
+
 // Validates a generated listing { title, bullets, description } against
 // the Amazon compliance checklist. Returns an array of
 // { field, severity, rule, match } issues (empty array = all checks pass).

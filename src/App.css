@@ -155,10 +155,43 @@
   margin-top: 32px;
 }
 
-.output-section h2 {
+.output-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.output-section-header h2 {
   color: var(--accent);
   font-size: 1.2rem;
-  margin-bottom: 16px;
+}
+
+.validation-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.validation-badge-pass {
+  color: var(--pass);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+}
+
+.validation-badge-warn {
+  color: var(--warn);
+  background: rgba(245, 146, 27, 0.12);
+  border: 1px solid var(--warn);
+}
+
+.validation-badge-fail {
+  color: #ffb4b4;
+  background: rgba(248, 81, 73, 0.1);
+  border: 1px solid var(--error);
 }
 
 .output-cards {
@@ -243,11 +276,6 @@
   line-height: 1.6;
 }
 
-.output-card-body .output-text {
-  margin: 0;
-  white-space: pre-wrap;
-}
-
 .output-card-body ol {
   margin: 0;
   padding-left: 1.4em;
@@ -256,26 +284,36 @@
   gap: 8px;
 }
 
+/* Editable output fields - styled to read like static text until focused */
+.output-edit-textarea {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 4px 6px;
+  margin: 0;
+  min-height: 0;
+  resize: none;
+  overflow: hidden;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.output-edit-textarea:hover {
+  background: var(--bg-input);
+}
+
+.output-edit-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg-input);
+}
+
 /* Validation panel */
-.validation-summary {
-  padding: 12px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.validation-summary.pass {
-  color: var(--pass);
-  background: var(--accent-dim);
-  border: 1px solid var(--accent);
-}
-
-.validation-summary.fail {
-  color: #ffb4b4;
-  background: rgba(248, 81, 73, 0.1);
-  border: 1px solid var(--error);
-}
-
 .check-list {
   list-style: none;
   margin: 0;
@@ -305,6 +343,10 @@
 
 .check-item.pass .check-icon {
   color: var(--pass);
+}
+
+.check-item.warn .check-icon {
+  color: var(--warn);
 }
 
 .check-item.fail .check-icon {

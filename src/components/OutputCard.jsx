@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
-function OutputCard({ title, content, isList }) {
+// Grows a textarea to fit its content so edited fields keep reading like
+// the static cards they replace, instead of showing a scrollbar.
+function autosize(el) {
+  if (!el) return;
+  el.style.height = 'auto';
+  el.style.height = `${el.scrollHeight}px`;
+}
+
+function OutputCard({ title, content, isList, onChange }) {
   const [copied, setCopied] = useState(false);
 
   const bullets = Array.isArray(content) ? content : [];
@@ -24,6 +32,14 @@ function OutputCard({ title, content, isList }) {
     }
   };
 
+  const handleInput = (e) => autosize(e.target);
+
+  const handleBulletChange = (index, value) => {
+    const next = [...bullets];
+    next[index] = value;
+    onChange(next);
+  };
+
   return (
     <div className="output-card">
       <div className="output-card-header">
@@ -39,11 +55,29 @@ function OutputCard({ title, content, isList }) {
         {isList ? (
           <ol>
             {bullets.map((bullet, i) => (
-              <li key={i}>{bullet}</li>
+              <li key={i}>
+                <textarea
+                  className="output-edit-textarea"
+                  value={bullet}
+                  onChange={(e) => handleBulletChange(i, e.target.value)}
+                  onInput={handleInput}
+                  ref={autosize}
+                  rows={1}
+                  aria-label={`Bullet ${i + 1}`}
+                />
+              </li>
             ))}
           </ol>
         ) : (
-          <p className="output-text">{text}</p>
+          <textarea
+            className="output-edit-textarea output-edit-textarea-block"
+            value={text}
+            onChange={(e) => onChange(e.target.value)}
+            onInput={handleInput}
+            ref={autosize}
+            rows={1}
+            aria-label={title}
+          />
         )}
       </div>
     </div>

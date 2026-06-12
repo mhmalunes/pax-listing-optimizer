@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const REGIONS = [
   { value: 'US', label: 'United States (US)' },
   { value: 'CA', label: 'Canada (CA)' },
@@ -12,15 +14,19 @@ const REGIONS = [
 ];
 
 function AccountSettings({ settings, onChange }) {
+  const [open, setOpen] = useState(!settings.brandName);
+
   const update = (field) => (e) => {
     onChange({ ...settings, [field]: e.target.value });
   };
 
   return (
     <section className="panel">
-      <div className="panel-static-header">
+      <div className="panel-header" onClick={() => setOpen((o) => !o)}>
         <h2>Account Settings</h2>
+        <span className={`chevron ${open ? 'open' : ''}`}>▶</span>
       </div>
+      {open && (
       <div className="panel-body">
         <div className="field-row">
           <div>
@@ -69,6 +75,7 @@ function AccountSettings({ settings, onChange }) {
           </p>
         </div>
       </div>
+      )}
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import SettingsPanel from './components/SettingsPanel';
 import AccountSettings from './components/AccountSettings';
@@ -7,7 +7,7 @@ import OutputCard from './components/OutputCard';
 import ValidationPanel from './components/ValidationPanel';
 import useLocalStorage from './hooks/useLocalStorage';
 import { generateListing, ListingApiError } from './api';
-import { validateListing } from './validator';
+import { validateListing, getValidationSummary } from './validator';
 
 const DEFAULT_ACCOUNT_SETTINGS = {
   brandName: '',
@@ -43,20 +43,29 @@ function App() {
   const [product, setProduct] = useState(DEFAULT_PRODUCT);
 
   const [output, setOutput] = useState(null);
-  const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [generationId, setGenerationId] = useState(0);
+
+  const issues = validateListing(output, accountSettings);
+
+  const outputRef = useRef(null);
+
+  useEffect(() => {
+    if (generationId > 0) {
+      outputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [generationId]);
 
   const handleGenerate = async () => {
     setLoading(true);
     setError(null);
     setOutput(null);
-    setIssues([]);
 
     try {
       const result = await generateListing({ apiKey, accountSettings, product });
       setOutput(result);
-      setIssues(validateListing(result, accountSettings));
+      setGenerationId((id) => id + 1);
     } catch (err) {
       if (err instanceof ListingApiError) {
         setError({ message: err.message, raw: err.rawText });
@@ -66,6 +75,10 @@ function App() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const updateOutputField = (field) => (value) => {
+    setOutput((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleExport = () => {
@@ -94,6 +107,8 @@ function App() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
+
+  const summary = getValidationSummary(issues);
 
   return (
     <div className="app">
@@ -126,12 +141,17 @@ function App() {
       )}
 
       {output && (
-        <section className="output-section">
-          <h2>Generated Listing</h2>
+        <section className="output-section" ref={outputRef}>
+          <div className="output-section-header">
+            <h2>Generated Listing</h2>
+            <div className={`validation-badge validation-badge-${summary.level}`}>
+              {summary.label}
+            </div>
+          </div>
           <div className="output-cards">
-            <OutputCard title="TITLE" content={output.title} />
-            <OutputCard title="BULLETS" content={output.bullets} isList />
-            <OutputCard title="DESCRIPTION" content={output.description} />
+            <OutputCard title="TITLE" content={output.title} onChange={updateOutputField('title')} />
+            <OutputCard title="BULLETS" content={output.bullets} isList onChange={updateOutputField('bullets')} />
+            <OutputCard title="DESCRIPTION" content={output.description} onChange={updateOutputField('description')} />
           </div>
           <div className="export-row">
             <button type="button" className="export-btn" onClick={handleExport}>
