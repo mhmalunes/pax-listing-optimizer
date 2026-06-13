@@ -15,7 +15,7 @@ function buildUserMessage(product) {
   return [
     `Product name: ${product.productName || '(not provided)'}`,
     `Current title: ${product.currentTitle || '(none - this is a new listing)'}`,
-    `Features & specs:\n${product.features || '(none provided)'}`,
+    `Product details (raw, may be unstructured - extract facts from it):\n${product.features || '(none provided)'}`,
     `Primary keyword: ${product.primaryKeyword || '(not provided)'}`,
     `Secondary keywords: ${product.secondaryKeywords || '(none)'}`,
     `Target customer: ${product.targetCustomer || '(not specified)'}`,

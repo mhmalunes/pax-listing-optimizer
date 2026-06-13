@@ -44,13 +44,13 @@ function ProductForm({ product, onChange }) {
         </div>
 
         <div>
-          <label htmlFor="features">Features &amp; specs (one per line)</label>
+          <label htmlFor="features">Product details</label>
           <textarea
             id="features"
             value={product.features}
             onChange={update('features')}
             rows={6}
-            placeholder={'Spring-loaded slide hammer\n10-piece glue tab set\nFits panels up to 2mm thick\n...'}
+            placeholder="Paste anything: About this item, product description, specs, whatever's on the listing."
           />
         </div>
 
