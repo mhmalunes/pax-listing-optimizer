@@ -30,8 +30,17 @@ function stripJsonFences(text) {
     .trim();
 }
 
+// Claude sometimes adds a preamble sentence before the JSON object despite
+// being told not to. Extract the outermost {...} so that's tolerated.
+function extractJsonObject(text) {
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start === -1 || end === -1 || end < start) return text;
+  return text.slice(start, end + 1);
+}
+
 function parseListingResponse(rawText) {
-  const cleaned = stripJsonFences(rawText);
+  const cleaned = extractJsonObject(stripJsonFences(rawText));
 
   let parsed;
   try {
@@ -93,7 +102,7 @@ export async function generateListing({ apiKey, accountSettings, product }) {
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 2000,
+        max_tokens: 4096,
         system: buildSystemPrompt(accountSettings),
         messages: [{ role: 'user', content: buildUserMessage(product) }],
       }),
