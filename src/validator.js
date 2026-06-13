@@ -12,7 +12,7 @@ export const CHECK_CATEGORIES = [
   { id: 'keyword-stuffing', label: 'Keyword stuffing (title)' },
   { id: 'medical-claims', label: 'Medical claims' },
   { id: 'pricing-claims', label: 'Pricing & shipping claims' },
-  { id: 'superlatives', label: 'Superlatives' },
+  { id: 'superlatives', label: 'Superlatives & unverifiable claims' },
   { id: 'competitor-names', label: 'Competitor names' },
   { id: 'bullet-count', label: 'Bullet count' },
   { id: 'bullet-length', label: 'Bullet length' },
@@ -85,6 +85,9 @@ const SUPERLATIVE_PATTERNS = [
   { rule: 'Superlative ("top rated")', regex: /\btop[- ]rated\b/i },
   { rule: 'Superlative ("industry leading")', regex: /\bindustry[- ]leading\b/i },
   { rule: 'Superlative ("best")', regex: /\bbest\b/i },
+  { rule: 'Unverifiable claim ("exclusive")', regex: /\bexclusive(ly)?\b/i },
+  { rule: 'Unverifiable claim ("the only")', regex: /\bthe only\b/i },
+  { rule: 'Unverifiable claim ("guaranteed")', regex: /\bguarantee[ds]?\b/i },
 ];
 
 function escapeRegex(str) {

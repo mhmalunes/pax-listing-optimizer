@@ -57,8 +57,9 @@ PROHIBITED IN ALL FIELDS
   doctor recommended, FDA approved, therapeutic
 - Pricing/shipping claims: cheapest, free shipping, lowest price,
   best deal, discount, sale, save money
-- Unbackable superlatives: #1, number one, best in the world,
-  top rated, world's best, industry leading
+- Unbackable superlatives and absolute claims: #1, number one, best
+  in the world, top rated, world's best, industry leading, exclusive,
+  "the only [product] that...", guaranteed
 - Competitor brand names of any kind
 - Any fact, spec, material, or certification NOT present in the
   product information provided. Never invent details. If a spec is

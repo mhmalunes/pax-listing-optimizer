@@ -99,8 +99,9 @@ regexes, so e.g. "bestseller" does not trip the "best" rule.
   "antibacterial".
 - ERROR on pricing/shipping language: "cheapest", "free shipping",
   "lowest price", "best deal", "discount", "on sale", "save money".
-- ERROR on unverifiable superlatives: "#1", "number one", "best in the
-  world", "world's best", "top rated", "industry leading", "best".
+- ERROR on unverifiable superlatives and absolute claims: "#1", "number
+  one", "best in the world", "world's best", "top rated", "industry
+  leading", "best", "exclusive", "the only", "guaranteed".
 - ERROR on competitor brand names. Seeded with common auto-body tool
   brands; add more by writing a line such as
   `Competitors: Brand A, Brand B` in Account Settings -> Additional
